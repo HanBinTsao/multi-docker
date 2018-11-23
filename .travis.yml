@@ -18,7 +18,7 @@ after_success:
     
 
    # Log in to the docker CLI
-   - echo "DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_ACCOUNT" --password-stdin
+   - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_ACCOUNT" --password-stdin
    # Take those images and push them to docker hub
    - docker push hbtdocker/multi-client
    - docker push hbtdocker/multi-nginx
