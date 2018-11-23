@@ -1,0 +1,29 @@
+sudo: required
+services:
+  - docker
+
+
+before_install:
+   - docker build -t hbtdocker/react-test -f ./client/Dockerfile.dev ./client
+   
+script:
+   - docker run hbtdocker/react-test npm test -- --coverage
+
+after_success:
+   # dont need to specified dockerfile, its production build
+   - docker build -t hbtdocker/multi-client ./client
+   - docker build -t hbtdocker/multi-nginx ./nginx
+   - docker build -t hbtdocker/multi-server ./server
+   - docker build -t hbtdocker/multi-worker ./worker
+    
+
+   # Log in to the docker CLI
+   - echo "DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_ACCOUNT" --passoword-stdin
+   # Take those images and push them to docker hub
+   - docker push hbtdocker/multi-client
+   - docker push hbtdocker/multi-nginx
+   - docker push hbtdocker/multi-server
+   - docker push hbtdocker/multi-worker
+
+
+
