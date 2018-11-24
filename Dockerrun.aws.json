@@ -1,0 +1,41 @@
+{
+
+    "AWSEBDockerrunVersion":2,
+    "containerDefinitions":[
+        {
+            "name":"client",
+            "image":"hbtdocker/multi-client",
+            "hostname":"client",
+            "essential":false
+        },
+        {
+            "name":"server",
+            "image":"hbtdocker/multi-server",
+            "hostname":"api",
+            "essential":false
+        },
+        {
+            "name":"worker",
+            "image":"hbtdocker/multi-worker",
+            "hostname":"worker",
+            "essential":false
+        },
+        {
+            "name":"nginx",
+            "image":"hbtdocker/multi-nginx",
+            "hostname":"nginx",
+            "essential":true,
+            "portMappings":[
+                {
+                    "hostPort":80,
+                    "containerPort":80
+                }
+            ],
+            "links":[
+                "client",
+                "server"
+            ]
+        }
+    ]
+
+}
